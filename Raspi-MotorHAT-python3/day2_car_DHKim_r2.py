@@ -13,8 +13,8 @@ servo = mh._pwm
 servo.setPWMFreq(60)
 
 #여기를 바꾸어서 자신의 서보모터에 맞게 설정해주세요
-L_limit = 450
-R_limit = 200
+R_limit = 450
+L_limit = 250
 mid_center = 350
 
 
@@ -49,22 +49,24 @@ def speedDown():
 # 각도만큼 핸들 틀기
 def steer(angle=0): # 각도 +30˚~ -30˚
     if angle <= -30: # 서보의 작동범위는 좌우 양 극단의 30˚까지는 가지 않는다.
-        angle = -30 
+        angle = -30
+
     if angle >= 30:
-        angle = 30 
+        angle = 30
     #pulse_time = 200+(614-200)//180*(angle+90)  # 200:-90˚ ~ 614:+90˚ 비율에 따라 맵핑
     pulse_time = mid_center
+
     if angle == 0 :
         pulse_time = mid_center
         servo.setPWM(0,0,mid_center)
 
-    else if angle > 0 : # LEFT
+    elif angle > 0 : # LEFT
         #a2pul = int(angle*L_itv/30) + mid_center
         pulse_time = int(angle*L_itv/30) + mid_center
         servo.setPWM(0,0,pulse_time)
 
-    else if angle < 0 : #RIGHT
-        pulse_time = int(angle*R_itv/30) - mid_center
+    elif angle < 0 : #RIGHT
+        pulse_time = int(angle*R_itv/30)*(-1) + mid_center
         servo.setPWM(0,0,pulse_time)
         
     else :
